@@ -24,11 +24,11 @@ endif
 ifneq ($(strip $(CXX_DEPS)),)
 -include $(CXX_DEPS)
 endif
-ifneq ($(strip $(CPP_DEPS)),)
--include $(CPP_DEPS)
-endif
 ifneq ($(strip $(C_DEPS)),)
 -include $(C_DEPS)
+endif
+ifneq ($(strip $(CPP_DEPS)),)
+-include $(CPP_DEPS)
 endif
 endif
 
@@ -42,14 +42,14 @@ all: RecognizePosition
 # Tool invocations
 RecognizePosition: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
-	@echo 'Invoking: GCC C++ Linker'
-	g++ -L/usr/local/lib -o "RecognizePosition" $(OBJS) $(USER_OBJS) $(LIBS)
+	@echo 'Invoking: Cross G++ Linker'
+	arm-hisiv100nptl-linux-g++ -L/home/fatsun/Library/OpenCV/install-opencv-2.4.12-hisiv100/lib -o "RecognizePosition" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(C_UPPER_DEPS)$(CXX_DEPS)$(OBJS)$(CPP_DEPS)$(C_DEPS) RecognizePosition
+	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(OBJS)$(C_UPPER_DEPS)$(CXX_DEPS)$(C_DEPS)$(CPP_DEPS) RecognizePosition
 	-@echo ' '
 
 .PHONY: all clean dependents

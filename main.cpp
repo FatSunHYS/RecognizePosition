@@ -57,9 +57,13 @@ int main()
 
 	if( Serials_Initialization() != true )
 	{
-		printf( "Serials_Initialization() Error!\n" );
+		printf( "Main : Serials_Initialization() Error!\n" );
 		return 0;
 	}
+
+	printf( "Main : Serials Initialization Done!\n" );
+
+
 
 
 	while( true )

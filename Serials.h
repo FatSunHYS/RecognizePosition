@@ -29,20 +29,23 @@
 /*=====================================
 Include headers
 =====================================*/
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <termios.h>
-#include <errno.h>
+
 
 
 
 
 /*=====================================
 Global Constants
+=====================================*/
+#define SERIALS_RECIEVEDATA_BUFFERSLOT  	16
+#define SERIALS_RECIEVEDATA_BUFFERLENGTH	6
+#define SERIALS_TRANSMITDATA_BUFFERSLOT		16
+#define SERIALS_TRANSMITDATA_BUFFERLENGTH	6
+
+
+
+/*=====================================
+Global Macro
 =====================================*/
 #if 1
 #define DEVICE_SERIALS (char*)"/dev/ttyUSB1"
@@ -52,9 +55,8 @@ Global Constants
 
 
 /*=====================================
-Global Macro
-=====================================*/
-
+ Class definition
+ =====================================*/
 
 
 /*=====================================
