@@ -28,6 +28,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <termios.h>
+#include <errno.h>
+
 #include "Serials.h"
 #include "MessageController.h"
 #include "LaserSnap.h"
@@ -48,7 +55,6 @@ unsigned char LocationPoint;
 
 int main()
 {
-
 	if( Serials_Initialization() != true )
 	{
 		printf( "Main : Serials_Initialization() Error!\n" );
