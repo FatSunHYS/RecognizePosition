@@ -45,6 +45,9 @@
 								</option>
 								<option id="gnu.cpp.link.option.libs.718978522" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="pthread"/>
+									<listOptionValue builtIn="false" value="opencv_imgproc"/>
+									<listOptionValue builtIn="false" value="opencv_core"/>
+									<listOptionValue builtIn="false" value="opencv_highgui"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.73850120" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -85,6 +88,7 @@
 								<option id="gnu.c.compiler.option.debugging.level.601139132" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.1495932234" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/fatsun/Library/OpenCV/install-opencv-2.4.12-hisiv100/include/opencv"/>
+									<listOptionValue builtIn="false" value="/home/fatsun/Library/OpenCV/install-opencv-2.4.12-hisiv100/include"/>
 									<listOptionValue builtIn="false" value="/home/fatsun/Library/OpenCV/install-opencv-2.4.12-hisiv100/include/opencv2"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1718274564" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
@@ -94,6 +98,7 @@
 								<option id="gnu.cpp.compiler.option.debugging.level.1620461281" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.663239249" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/fatsun/Library/OpenCV/install-opencv-2.4.12-hisiv100/include/opencv"/>
+									<listOptionValue builtIn="false" value="/home/fatsun/Library/OpenCV/install-opencv-2.4.12-hisiv100/include"/>
 									<listOptionValue builtIn="false" value="/home/fatsun/Library/OpenCV/install-opencv-2.4.12-hisiv100/include/opencv2"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.904871664" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -103,8 +108,11 @@
 								<option id="gnu.cpp.link.option.paths.1231963977" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/home/fatsun/Library/OpenCV/install-opencv-2.4.12-hisiv100/lib"/>
 								</option>
-								<option id="gnu.cpp.link.option.libs.1321091309" superClass="gnu.cpp.link.option.libs" valueType="libs">
+								<option id="gnu.cpp.link.option.libs.1321091309" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="pthread"/>
+									<listOptionValue builtIn="false" value="opencv_imgproc"/>
+									<listOptionValue builtIn="false" value="opencv_core"/>
+									<listOptionValue builtIn="false" value="opencv_highgui"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.373000055" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>

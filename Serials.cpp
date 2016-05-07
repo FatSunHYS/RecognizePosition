@@ -60,6 +60,11 @@ int Serials_TransmitBuffer_SlotIndex_R;
 bool Serials_Initialization();
 void* Serials_RecieveData_Pthread( void* arg );
 void* Serials_TransmitData_Pthread( void* arg );
+unsigned char* Serials_GetRecieveMessage();
+unsigned char* Serials_GetTransmitBuffer();
+void Serials_MessageRead();
+void Serials_SendMessage();
+bool Serials_IsNewMessageRecieved();
 
 /*=====================================
  Implementation of functions
@@ -69,7 +74,7 @@ bool Serials_Initialization()
 {
 	int error_number;
 
-	//Initialize
+	//Initialize some variables.
 	for( int counter = 0; counter < SERIALS_RECIEVEDATA_BUFFERSLOT; ++counter )
 	{
 		Serials_RecieveData_Valid[ counter ] = false;
@@ -157,6 +162,7 @@ void* Serials_RecieveData_Pthread( void* arg )
 	int readcounter;
 	unsigned char TemporaryBuffer[ 2 ];
 	int TemporaryIndex = 0;
+	int StopIndex;
 
 	printf( "Serials : Serials_RecieveData_Pthread Start.\n" );
 
@@ -174,7 +180,15 @@ void* Serials_RecieveData_Pthread( void* arg )
 
 			if( TemporaryIndex == 0 )
 			{
-				if( ( TemporaryBuffer[ 0 ] != 0xFD ) && ( TemporaryBuffer[ 0 ] != 0xCA ) )
+				if( TemporaryBuffer[ 0 ] == 0xFD )
+				{
+					StopIndex = 8;
+				}
+				else if( TemporaryBuffer[ 0 ] == 0xCA )
+				{
+					StopIndex = 6;
+				}
+				else
 				{
 					break;
 				}
@@ -192,16 +206,30 @@ void* Serials_RecieveData_Pthread( void* arg )
 			Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ TemporaryIndex ] = TemporaryBuffer[ 0 ];
 			++TemporaryIndex;
 
-			if( TemporaryIndex == SERIALS_RECIEVEDATA_BUFFERLENGTH )
+			if( TemporaryIndex == StopIndex )
 			{
+#if 1
 				printf( "Serials : Recieve a new message on slot %d.\n", Serials_RecieveBuffer_SlotIndex_W );
-				printf( "Serials : Messages - %02X %02X %02X %02X %02X %02X \n", Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 0 ],
-				        Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 1 ], Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 2 ],
-				        Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 3 ], Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 4 ],
-				        Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 5 ] );
+				if( StopIndex == 6 )
+				{
+					printf( "Serials : Messages - %02X %02X %02X %02X %02X %02X\n", Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 0 ],
+					        Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 1 ], Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 2 ],
+					        Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 3 ], Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 4 ],
+					        Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 5 ] );
+				}
+				else
+				{
+					printf( "Serials : Messages - %02X %02X %02X %02X %02X %02X %02X %02X\n", Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 0 ],
+					        Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 1 ], Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 2 ],
+					        Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 3 ], Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 4 ],
+					        Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 5 ], Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 6 ],
+					        Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_W ][ 7 ] );
+				}
+
+#endif
 
 				Serials_RecieveData_Valid[ Serials_RecieveBuffer_SlotIndex_W ] = true;
-				++Serials_RecieveBuffer_SlotIndex_W;
+				Serials_RecieveBuffer_SlotIndex_W = ( Serials_RecieveBuffer_SlotIndex_W + 1 ) % SERIALS_RECIEVEDATA_BUFFERSLOT;
 				TemporaryIndex = 0;
 
 			}
@@ -231,7 +259,7 @@ void* Serials_TransmitData_Pthread( void* arg )
 				printf( "Serials : Transmit a message on slot %d successfully.\n", Serials_TransmitBuffer_SlotIndex_R );
 
 				Serials_TransmitData_Valid[ Serials_TransmitBuffer_SlotIndex_R ] = false;
-				++Serials_TransmitBuffer_SlotIndex_R;
+				Serials_TransmitBuffer_SlotIndex_R = ( Serials_TransmitBuffer_SlotIndex_R + 1 ) % SERIALS_TRANSMITDATA_BUFFERSLOT;
 				ErrorCounter = 0;
 			}
 			else
@@ -244,7 +272,7 @@ void* Serials_TransmitData_Pthread( void* arg )
 					printf( "Serials : Transmit failed for 3 times. Ignore this message.\n" );
 					ErrorCounter = 0;
 					Serials_TransmitData_Valid[ Serials_TransmitBuffer_SlotIndex_R ] = false;
-					++Serials_TransmitBuffer_SlotIndex_R;
+					Serials_TransmitBuffer_SlotIndex_R = ( Serials_TransmitBuffer_SlotIndex_R + 1 ) % SERIALS_TRANSMITDATA_BUFFERSLOT;
 				}
 			}
 		}
@@ -252,5 +280,52 @@ void* Serials_TransmitData_Pthread( void* arg )
 
 	//This should never return.
 	return ( void* )0;
+}
+
+unsigned char* Serials_GetRecieveMessage()
+{
+	if( Serials_RecieveData_Valid[ Serials_RecieveBuffer_SlotIndex_R ] == true )
+	{
+		return Serials_RecieveBuffer[ Serials_RecieveBuffer_SlotIndex_R ];
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+unsigned char* Serials_GetTransmitBuffer()
+{
+	if( Serials_TransmitData_Valid[ Serials_TransmitBuffer_SlotIndex_W ] == false )
+	{
+		return Serials_TransmitBuffer[ Serials_TransmitBuffer_SlotIndex_W ];
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+void Serials_MessageRead()
+{
+	if( Serials_RecieveData_Valid[ Serials_RecieveBuffer_SlotIndex_R ] == true )
+	{
+		Serials_RecieveData_Valid[ Serials_RecieveBuffer_SlotIndex_R ] = false;
+		Serials_RecieveBuffer_SlotIndex_R = ( Serials_RecieveBuffer_SlotIndex_R + 1 ) % SERIALS_RECIEVEDATA_BUFFERSLOT;
+	}
+}
+
+void Serials_SendMessage()
+{
+	if( Serials_TransmitData_Valid[ Serials_TransmitBuffer_SlotIndex_W ] == false )
+	{
+		Serials_TransmitData_Valid[ Serials_TransmitBuffer_SlotIndex_W ] = true;
+		Serials_TransmitBuffer_SlotIndex_W = ( Serials_TransmitBuffer_SlotIndex_W + 1 ) % SERIALS_TRANSMITDATA_BUFFERSLOT;
+	}
+}
+
+bool Serials_IsNewMessageRecieved()
+{
+	return Serials_RecieveData_Valid[ Serials_RecieveBuffer_SlotIndex_R ];
 }
 

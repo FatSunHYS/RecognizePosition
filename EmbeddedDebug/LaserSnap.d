@@ -1,5 +1,4 @@
-main.o main.o: ../main.cpp ../Serials.h ../MessageController.h \
- ../LaserSnap.h \
+LaserSnap.o LaserSnap.o: ../LaserSnap.cpp ../LaserSnap.h \
  /home/fatsun/Library/OpenCV/install-opencv-2.4.12-hisiv100/include/opencv/cv.h \
  /home/fatsun/Library/OpenCV/install-opencv-2.4.12-hisiv100/include/opencv2/core/core_c.h \
  /home/fatsun/Library/OpenCV/install-opencv-2.4.12-hisiv100/include/opencv2/core/types_c.h \
@@ -52,10 +51,6 @@ main.o main.o: ../main.cpp ../Serials.h ../MessageController.h \
  /home/fatsun/Library/OpenCV/install-opencv-2.4.12-hisiv100/include/opencv2/highgui/highgui_c.h \
  /home/fatsun/Library/OpenCV/install-opencv-2.4.12-hisiv100/include/opencv2/highgui/highgui.hpp \
  /home/fatsun/Library/OpenCV/install-opencv-2.4.12-hisiv100/include/opencv2/imgproc/imgproc.hpp
-
-../Serials.h:
-
-../MessageController.h:
 
 ../LaserSnap.h:
 

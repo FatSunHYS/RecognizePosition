@@ -7,7 +7,7 @@
  * @creationdate   
  *		
  * @lastmodifydate
- *		May 1, 2016
+ *		May 6, 2016
  * @verify
  *		
  * @verifydate
@@ -23,8 +23,8 @@
  */
 
 
-#ifndef SERIALS_H_
-#define SERIALS_H_
+#ifndef MESSAGECONTROLLER_H_
+#define MESSAGECONTROLLER_H_
 
 /*=====================================
 Include headers
@@ -32,31 +32,24 @@ Include headers
 
 
 
-
-
 /*=====================================
 Global Constants
 =====================================*/
-#define SERIALS_RECIEVEDATA_BUFFERSLOT  	16
-#define SERIALS_RECIEVEDATA_BUFFERLENGTH	8
-#define SERIALS_TRANSMITDATA_BUFFERSLOT		16
-#define SERIALS_TRANSMITDATA_BUFFERLENGTH	8
-
+#define TASK_NONE		0x00
+#define TASK_PHOTOSNAP1 0x11
+#define TASK_PHOTOSNAP2 0x22
+#define TASK_PHOTOSNAP3 0x33
+#define TASK_PHOTOSNAP4 0x44
+#define TASK_LASERSNAP1 0xA1
+#define TASK_LASERSNAP2	0xA2
+#define TASK_LASERSNAP3	0xA3
+#define TASK_LASERSNAP4 0xA4
 
 
 /*=====================================
 Global Macro
 =====================================*/
-#if 0
-#define DEVICE_SERIALS (char*)"/dev/ttyUSB1"
-#else
-#define DEVICE_SERIALS (char*)"/dev/ttyAMA2"
-#endif
 
-
-/*=====================================
- Class definition
- =====================================*/
 
 
 /*=====================================
@@ -68,14 +61,10 @@ Extern Variables
 /*=====================================
 Extern Functions
 =====================================*/
-extern bool Serials_Initialization();
-extern unsigned char* Serials_GetRecieveMessage();
-extern unsigned char* Serials_GetTransmitBuffer();
-extern void Serials_MessageRead();
-extern void Serials_SendMessage();
-extern bool Serials_IsNewMessageRecieved();
+extern void MessageController_TaskSelect( unsigned char& TaskSelection, unsigned char& LocationPoint );
 
 
 
 
-#endif /* SERIALS_H_ */
+
+#endif /* MESSAGECONTROLLER_H_ */
